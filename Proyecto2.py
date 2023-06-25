@@ -4,6 +4,88 @@ from pathlib import Path
 # Funcion Wipe todos los index
 
 paintings = []
+
+# Funcion cambiar estatus para mantenimiento o en exhibicion
+def changeState(line, index, mode):
+    if mode == 0:
+        __location__ = os.path.realpath(
+            os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        p = Path(__file__).with_name('db.txt')
+        with open(p, 'r') as f:
+            g = f.readlines()
+            line = line.replace('EN EXHIBICIÓN', 'EN MANTENIMIENTO')
+            g[index] = line
+        with open(p, 'w') as h:
+            h.writelines(g)
+    elif mode == 1:
+        __location__ = os.path.realpath(
+            os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        p = Path(__file__).with_name('db.txt')
+        with open(p, 'r') as f:
+            g = f.readlines()
+            line = line.replace('EN MANTENIMIENTO', 'EN EXHIBICIÓN')
+            g[index] = line
+        with open(p, 'w') as h:
+            h.writelines(g)
+  
+# Funcion que cambia de en exhibicion a en mantenimiento
+def puestaMant():
+    selector = input("Seleccione como hacer su busqueda:\n1. Buscar pintura por cota.\n2. Buscar pintura por nombre.\n")
+    if selector == '1':
+       index = bCota()
+    elif selector == '2':
+       index = bNombre()
+    if index == '-1':
+        print("No se ha encontrado la cota o nombre buscado.")
+        input("Presione enter para volver al menu principal... ")
+        menu()
+    else:
+        index = int(index.replace('\n', ""))
+        __location__ = os.path.realpath(
+            os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        p = Path(__file__).with_name('db.txt')
+        with open(p) as f:
+            g = f.readlines()
+            x = g[index].split(';')   
+            if x[3] == 'EN EXHIBICIÓN\n':
+                    changeState(g[index], index, 0)
+                    print("Cambio de estatus exitoso")
+                    input("Presione enter para volver al menu principal...")
+                    menu()
+            else:
+                print("La pintura ya se encuentra en mantenimiento")
+                input("Presione enter para volver al menu principal...")
+                menu()
+           
+# Funcion que cambia de en mantenimiento a en exhibicion
+def puestaExh():
+    selector = input("Seleccione como hacer su busqueda:\n1. Buscar pintura por cota.\n2. Buscar pintura por nombre.\n")
+    if selector == '1':
+       index = bCota()
+    elif selector == '2':
+       index = bNombre()
+    if index == '-1':
+        print("No se ha encontrado la cota o nombre buscado.")
+        input("Presione enter para volver al menu principal... ")
+        menu()
+    else:
+        index = int(index.replace('\n', ""))
+        __location__ = os.path.realpath(
+            os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        p = Path(__file__).with_name('db.txt')
+        with open(p) as f:
+            g = f.readlines()
+            x = g[index].split(';')   
+            if x[3] == 'EN MANTENIMIENTO\n':
+                    changeState(g[index], index, 1)
+                    print("Cambio de estatus exitoso")
+                    input("Presione enter para volver al menu principal...")
+                    menu()
+            else:
+                print("La pintura ya se encuentra en exhibicion")
+                input("Presione enter para volver al menu principal...")
+                menu()
+
 def bDB(index):
     if index == '-1':
         print("No se ha encontrado la cota o nombre buscado.")
