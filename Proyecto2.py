@@ -4,6 +4,76 @@ from pathlib import Path
 # Funcion Wipe todos los index
 
 paintings = []
+def bDB(index):
+    if index == '-1':
+        print("No se ha encontrado la cota o nombre buscado.")
+        input("Presione enter para volver al menu principal... ")
+        menu()
+    else:
+        index = int(index.replace('\n', ""))
+        __location__ = os.path.realpath(
+            os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        p = Path(__file__).with_name('db.txt')
+        with open(p) as f:
+            g = f.readlines()
+            x = g[index].split(';')
+            print('\nCota: ' + x[0] + '\nNombre: ' + x[1] +
+                  '\nPrecio: $' + x[2] + '\nEstatus: ' + x[3])
+    input("Presione enter para volver al menu principal... ")
+    menu()              
+
+def bCota():
+    imp = input("Introduzca la cota que desea buscar: ").upper()
+    __location__ = os.path.realpath(
+        os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    p = Path(__file__).with_name('cotaIndex.txt')
+    with open(p) as f:
+        g = f.readlines()
+        l = []
+        for x in g:
+            l.append(x.split(';'))
+        # Comienzo busqueda binaria
+        pasos = 0
+        izq = 0
+        der = len(l) - 1
+        while izq <= der:
+            pasos += 1
+            medio = (izq + der) // 2
+
+            if l[medio][0] == imp:
+                return l[medio][1]
+            elif l[medio][0] > imp:
+                der = medio - 1
+            else:
+                izq = medio + 1
+        return str(-1)
+
+# Funcion de busqueda en archivo nameIndex
+def bNombre():
+    imp = input("Introduzca el nombre que desea buscar: ").upper()
+    __location__ = os.path.realpath(
+        os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    p = Path(__file__).with_name('nameIndex.txt')
+    with open(p) as f:
+        g = f.readlines()
+        l = []
+        for x in g:
+            l.append(x.split(';'))
+        # Comienzo busqueda binaria
+        pasos = 0
+        izq = 0
+        der = len(l) - 1
+        while izq <= der:
+            pasos += 1
+            medio = (izq + der) // 2
+
+            if l[medio][0].upper() == imp:
+                return l[medio][1]
+            elif l[medio][0].upper() > imp:
+                der = medio - 1
+            else:
+                izq = medio + 1
+        return str(-1)        
 
 # Funcion de registrar en archivo nameIndex y cotaIndex
 def regIndexes(name, cota, indice):
@@ -35,7 +105,6 @@ def organizrCota():
         for h in g:
             f.write(h)
     f.close()
-
 
 # Funcion reorganizar archivo nameIndex
 def organizrName():
@@ -86,17 +155,16 @@ def regPintura(cota, nombre, precio, status):
     
 # Funcion de validacion de nombre
 def validacion_nombre():
-  nombre = input("Introduzca el nombre de su pintura: \n")
+  nombre = input("Introduzca el nombre de su pintura (no exceda de 10 caracteres): \n")
   if len(nombre) <= 10:
     return nombre
   else:
     print("Asegúrese de que la cantidad de caracteres no exceda de 10")
     validacion_nombre()
 
-
 # Funcion de validacion de cota
 def validacion_cota():
-  cota = input("Introduzca la Cota: \n")
+  cota = input("Introduzca la Cota debe tener 4 letras y 4 dígitos (Ejemplo: ABCD1234): \n")
   digitos = sum(c.isdigit() for c in cota)
   letras = sum(c.isalpha() for c in cota)
   if (digitos == 4) and (letras == 4):
@@ -142,7 +210,7 @@ def nuevaPintura():
 
 def menu():
     print("==============================================================\nBienvenido al Sistema Manejador de la Galería de Arte Nacional\n==============================================================")
-    selector = input("\nSeleccione una de las siguientes opciones:\n1. Registrar una nueva pintura.\n2. Buscar pintura por cota.\n3. Buscar pintura por nombre.\n4. Limpiar la papelera de reciclaje de pinturas.\n5. Para salir del programa.\n")
+    selector = input("Seleccione una de las siguientes opciones:\n1. Registrar una nueva pintura.\n2. Buscar pintura por cota.\n3. Buscar pintura por nombre.\n4. Poner pintura en Mantenimiento\n5. Poner pintura en Exhibicion\n6. Eliminar pintura\n7. Compactar\n8. Salir del programa.\n")
     if selector == '1':
         nuevaPintura()
     elif selector == '2':
@@ -150,9 +218,15 @@ def menu():
     elif selector == '3':
         bDB(bNombre())
     elif selector == '4':
-        bBasura()
+        puestaMant()
     elif selector == '5':
-        exit()
+        puestaExh()
+    elif selector == '6':
+        eliminar()
+    elif selector == '7':
+        compactar()
+    elif selector == '8':
+        exit()             
     else:
         input("Ha introducido un valor errado, por favor vuelva a intentarlo.\nPresione enter para reiniciar el programa...")
         menu()
