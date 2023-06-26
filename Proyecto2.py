@@ -8,8 +8,7 @@ paintings = []
 # Funcion cambiar estatus para mantenimiento o en exhibicion
 def changeState(line, index, mode):
     if mode == 0:
-        __location__ = os.path.realpath(
-            os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
         p = Path(__file__).with_name('db.txt')
         with open(p, 'r') as f:
             g = f.readlines()
@@ -18,8 +17,7 @@ def changeState(line, index, mode):
         with open(p, 'w') as h:
             h.writelines(g)
     elif mode == 1:
-        __location__ = os.path.realpath(
-            os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        __location__ = os.path.realpath( os.path.join(os.getcwd(), os.path.dirname(__file__)))
         p = Path(__file__).with_name('db.txt')
         with open(p, 'r') as f:
             g = f.readlines()
@@ -41,8 +39,7 @@ def puestaMant():
         menu()
     else:
         index = int(index.replace('\n', ""))
-        __location__ = os.path.realpath(
-            os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
         p = Path(__file__).with_name('db.txt')
         with open(p) as f:
             g = f.readlines()
@@ -70,8 +67,7 @@ def puestaExh():
         menu()
     else:
         index = int(index.replace('\n', ""))
-        __location__ = os.path.realpath(
-            os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
         p = Path(__file__).with_name('db.txt')
         with open(p) as f:
             g = f.readlines()
@@ -93,8 +89,7 @@ def bDB(index):
         menu()
     else:
         index = int(index.replace('\n', ""))
-        __location__ = os.path.realpath(
-            os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
         p = Path(__file__).with_name('db.txt')
         with open(p) as f:
             g = f.readlines()
@@ -106,8 +101,7 @@ def bDB(index):
 
 def bCota():
     imp = input("Introduzca la cota que desea buscar: ").upper()
-    __location__ = os.path.realpath(
-        os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
     p = Path(__file__).with_name('cotaIndex.txt')
     with open(p) as f:
         g = f.readlines()
@@ -133,8 +127,7 @@ def bCota():
 # Funcion de busqueda en archivo nameIndex
 def bNombre():
     imp = input("Introduzca el nombre que desea buscar: ").upper()
-    __location__ = os.path.realpath(
-        os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
     p = Path(__file__).with_name('nameIndex.txt')
     with open(p) as f:
         g = f.readlines()
@@ -159,8 +152,7 @@ def bNombre():
 
 # Funcion de registrar en archivo nameIndex y cotaIndex
 def regIndexes(name, cota, indice):
-    __location__ = os.path.realpath(
-        os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    __location__ = os.path.realpath( os.path.join(os.getcwd(), os.path.dirname(__file__)))
     p = Path(__file__).with_name('nameIndex.txt')
     with p.open('a') as k:
         k.write(name + ';' + indice + '\n')
@@ -178,8 +170,7 @@ def regIndexes(name, cota, indice):
 # Funcion reorganizar archivo cotaIndex
 def organizrCota():
 
-    __location__ = os.path.realpath(
-        os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
     p = Path(__file__).with_name('cotaIndex.txt')
     with p.open('r+') as f:
         g = sorted(f)
@@ -190,9 +181,7 @@ def organizrCota():
 
 # Funcion reorganizar archivo nameIndex
 def organizrName():
-
-    __location__ = os.path.realpath(
-        os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
     p = Path(__file__).with_name('nameIndex.txt')
     with p.open('r+') as f:
         g = sorted(f)
@@ -203,9 +192,7 @@ def organizrName():
 
 # Funcion reorganizar archivo cotaIndex
 def organizrCota():
-
-    __location__ = os.path.realpath(
-        os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
     p = Path(__file__).with_name('cotaIndex.txt')
     with p.open('r+') as f:
         g = sorted(f)
@@ -216,8 +203,7 @@ def organizrCota():
 # Archivo que devuelve el index donde se agregará la pintura
 def indexDB():
     y = 0
-    __location__ = os.path.realpath(
-        os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
     p = Path(__file__).with_name('db.txt')
     with p.open('r') as f:
         for x in f:
@@ -227,8 +213,7 @@ def indexDB():
 
 def regPintura(cota, nombre, precio, status):
 
-    __location__ = os.path.realpath(
-        os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
     p = Path(__file__).with_name('db.txt')
     with p.open('a') as f:
         f.write(cota + ';' + nombre + ';' +
