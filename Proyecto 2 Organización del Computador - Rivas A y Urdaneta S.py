@@ -30,7 +30,7 @@ def puestaMant():
     elif selector == '2':
        index = buscarNombre()
     if index == '-1':
-        print("No se ha encontrado la cota o nombre buscado.")
+        print("La obra de arte ingresada no se encuentra en la galería.")
         input("Presione enter para volver al menú principal...\n")
         menu()
     else:
@@ -58,7 +58,7 @@ def puestaExh():
     elif selector == '2':
        index = buscarNombre()
     if index == '-1':
-        print("No se ha encontrado la cota o nombre buscado.")
+        print("La obra de arte ingresada no se encuentra en la galería.")
         input("Presione enter para volver al menú principal...\n")
         menu()
     else:
@@ -288,7 +288,7 @@ def validacion_ano():
         print("Introduzca un año valido.")
         validacion_ano()
 
-# Funcion input y registro de Pintura
+# Funcion input y registro de una pintura
 def nuevaPintura():
     print("A continuación te pediremos los datos de la pintura a registrar:\n")
     cota = validacion_cota()
@@ -312,7 +312,7 @@ def nuevaPintura():
     input("\nLa pintura ha sido agregada exitosamente.\nPresione enter para volver al menú...\n")
     menu()
 
-# Funcion encargada de compactar la base de datos  
+# Funcion encargada de marcar como eliminada a una pintura  
 def eliminar():
     selector = input("\nSeleccione como hacer su búsqueda:\n1. Buscar pintura por cota\n2. Buscar pintura por nombre\n>>>> ")
     if selector == '1':
@@ -320,7 +320,7 @@ def eliminar():
     elif selector == '2':
        index = buscarNombre()
     if index == '-1':
-        print("No se ha encontrado la cota o nombre buscado.")
+        print("\nLa obra de arte ingresada no se encuentra en la galería.")
         input("Presione enter para volver al menú principal...\n")
         menu()
     else:
@@ -333,10 +333,54 @@ def eliminar():
             f.close()
         aux = x[0]
         if aux[0:2] == "##":
-            print("La pintura seleccionada ya estaba marcada para como eliminada.")
+            print("\nLa pintura seleccionada ya estaba marcada como eliminada.")
             input("Presione enter para volver al menú principal...\n")
             menu()  
         x[0] = '##' + x[0]
+        cadena = ""
+        i = 0
+        for elemento in x:
+            i = i + 1
+            if i == 5:
+                cadena = cadena + elemento
+            else:
+                cadena = cadena + elemento + '/'
+        g[index] = cadena
+        __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        p = Path(__file__).with_name('db.txt')    
+        with open(p, 'w') as f:
+            for elemento in g:
+                f.write(elemento)
+            f.close()
+        print("\nLa pintura fue marcada como eliminada exitosamente. Recuerde compactar la base de datos para confirmar su eliminación.")
+        input("Presione enter para volver al menú principal...\n")
+        menu()   
+
+# Funcion encargada de marcar como eliminada a una pintura  
+def quitarEliminar(): 
+    selector = input("\nSeleccione como hacer su búsqueda:\n1. Buscar pintura por cota\n2. Buscar pintura por nombre\n>>>> ")
+    if selector == '1':
+       index = buscarCota()
+    elif selector == '2':
+       index = buscarNombre()
+    if index == '-1':
+        print("\nLa obra de arte ingresada no se encuentra en la galería.")
+        input("Presione enter para volver al menú principal...\n")
+        menu()
+    else:
+        index = int(index.replace('\n', ""))
+        __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+        p = Path(__file__).with_name('db.txt')
+        with open(p) as f:
+            g = f.readlines()
+            x = g[index].split('/')  
+            f.close()
+        aux = x[0]
+        if aux[0:2] != "##":
+            print("\nLa pintura seleccionada no estaba marcada como eliminada.")
+            input("Presione enter para volver al menú principal...\n")
+            menu() 
+        x[0] = aux[2:11]
         cadena = ""
         i = 0
         for elemento in x:
@@ -352,7 +396,7 @@ def eliminar():
             for elemento in g:
                 f.write(elemento)
             f.close()
-        print("La pintura fue marcada como eliminada exitosamente. Recuerde compactar la base de datos para confirmar su eliminación.")
+        print("\nLa pintura fue marcada como eliminada exitosamente. Recuerde compactar la base de datos para confirmar su eliminación.")
         input("Presione enter para volver al menú principal...\n")
         menu()   
 
@@ -482,7 +526,7 @@ def compactarBaseDeDatos(compactacion):
 # Funcion que despliega el menú
 def menu():
     print("==============================================================\nBienvenido al Sistema Manejador de la Galería de Arte Nacional\n==============================================================")
-    selector = input("Seleccione una de las siguientes opciones:\n1. Registrar una nueva pintura\n2. Buscar pintura por cota\n3. Buscar pintura por nombre\n4. Poner pintura en mantenimiento\n5. Poner pintura en exhibición\n6. Eliminar una pintura\n7. Compactar base de datos\n8. Salir del programa\n>>>> ")
+    selector = input("Seleccione una de las siguientes opciones:\n1. Registrar una nueva pintura\n2. Buscar pintura por cota\n3. Buscar pintura por nombre\n4. Poner pintura en mantenimiento\n5. Poner pintura en exhibición\n6. Eliminar una pintura\n7. Cancelar eliminación de una pintura\n8. Compactar base de datos\n9. Salir del programa\n>>>> ")
     if selector == '1':
         nuevaPintura()
     elif selector == '2':
@@ -496,13 +540,14 @@ def menu():
     elif selector == '6':
         eliminar()
     elif selector == '7':
-        compactar()
+        quitarEliminar()
     elif selector == '8':
+        compactar()
+    elif selector == '9':
         exit()             
     else:
         input("\nHa introducido un valor errado, por favor vuelva a intentarlo.\nPresione enter para reiniciar el programa...\n")
         menu()
 
-organizarNombreIndices()
 # Funcion inicial del programa
 menu()
