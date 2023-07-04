@@ -365,7 +365,7 @@ def compactar():
         else:
             print("Ingreso inválido, intente nuevamente.")
     if opcion == 'N':  
-        print("La compactación ha sido cancelada con éxito.")
+        print("\nLa compactación ha sido cancelada con éxito.")
         input("Presione enter para volver al menú principal...\n")
         menu()
     
@@ -473,7 +473,5 @@ def menu():
         input("Ha introducido un valor errado, por favor vuelva a intentarlo.\nPresione enter para reiniciar el programa...")
         menu()
 
-organizarNombre()
-organizarCota()
 # Funcion inicial del programa
 menu()
