@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-
+# Funcion que escribe "EN MANTENIMIENTO" o "EN EXHIBICION" en la base de datos
 def cambiarEstado(line, index, mode):
     if mode == 0:
         __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -24,14 +24,14 @@ def cambiarEstado(line, index, mode):
   
 # Funcion que cambia de exhibicion a mantenimiento
 def puestaMant():
-    selector = input("Seleccione como hacer su búsqueda:\n1. Buscar pintura por cota.\n2. Buscar pintura por nombre.\n>>>> ")
+    selector = input("\nSeleccione como hacer su búsqueda:\n1. Buscar pintura por cota\n2. Buscar pintura por nombre\n>>>> ")
     if selector == '1':
        index = buscarCota()
     elif selector == '2':
        index = buscarNombre()
     if index == '-1':
         print("No se ha encontrado la cota o nombre buscado.")
-        input("Presione enter para volver al menú principal... ")
+        input("Presione enter para volver al menú principal...\n")
         menu()
     else:
         index = int(index.replace('\n', ""))
@@ -43,23 +43,23 @@ def puestaMant():
             if x[4] == 'EN EXHIBICION\n':
                     cambiarEstado(g[index], index, 0)
                     print("Cambio de estatus exitoso")
-                    input("Presione enter para volver al menú principal...")
+                    input("Presione enter para volver al menú principal...\n")
                     menu()
             else:
                 print("La pintura ya se encuentra en mantenimiento")
-                input("Presione enter para volver al menú principal...")
+                input("Presione enter para volver al menú principal...\n")
                 menu()
            
 # Funcion que cambia de mantenimiento a exhibicion
 def puestaExh():
-    selector = input("Seleccione como hacer su búsqueda:\n1. Buscar pintura por cota.\n2. Buscar pintura por nombre.\n>>>> ")
+    selector = input("\nSeleccione como hacer su búsqueda:\n1. Buscar pintura por cota\n2. Buscar pintura por nombre\n>>>> ")
     if selector == '1':
        index = buscarCota()
     elif selector == '2':
        index = buscarNombre()
     if index == '-1':
         print("No se ha encontrado la cota o nombre buscado.")
-        input("Presione enter para volver al menú principal... ")
+        input("Presione enter para volver al menú principal...\n")
         menu()
     else:
         index = int(index.replace('\n', ""))
@@ -71,18 +71,18 @@ def puestaExh():
             if x[4] == 'EN MANTENIMIENTO\n':
                     cambiarEstado(g[index], index, 1)
                     print("Cambio de estatus exitoso")
-                    input("Presione enter para volver al menú principal...")
+                    input("Presione enter para volver al menú principal...\n")
                     menu()
             else:
                 print("La pintura ya se encuentra en exhibiciÓn")
-                input("Presione enter para volver al menú principal...")
+                input("Presione enter para volver al menú principal...\n")
                 menu()
 
 # Funcion encargada imprimir los resultados de la búsqueda 
 def buscarBaseDeDatos(index):
     if index == '-1':
         print("La obra de arte ingresada no se encuentra en la galería.")
-        input("Presione enter para volver al menú principal... ")
+        input("Presione enter para volver al menú principal...\n")
         menu()
     else:
         index = int(index.replace('\n', ""))
@@ -91,14 +91,16 @@ def buscarBaseDeDatos(index):
         with open(p) as f:
             g = f.readlines()
             x = g[index].split('/')
-            print('\n\tCota: ' + x[0] + '\n\tNombre: ' + x[1] +
-                  '\n\tPrecio: $' + x[2] + '\n\tAño: ' + x[3] + '\n\tEstatus: ' + x[4])
-    input("Presione enter para volver al menú principal... ")
+            f.close()
+        if x[0][0:2] == "##":          
+            print("\nEsta obra está marcada para ser eliminada.")
+        print('\tCota: ' + x[0] + '\n\tNombre: ' + x[1] + '\n\tPrecio: $' + x[2] + '\n\tAño: ' + x[3] + '\n\tEstatus: ' + x[4])
+    input("Presione enter para volver al menú principal...\n")
     menu()              
 
 # Funcion encargada de buscar la cota mediante una búsqueda binaria
 def buscarCota():
-    objetivo = input("Introduzca la cota de la obra que desea buscar: ").upper()
+    objetivo = input("\nIntroduzca la cota de la obra que desea buscar: ").upper()
 
     __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
     p = Path(__file__).with_name('cotaIndice.txt')
@@ -125,7 +127,7 @@ def buscarCota():
 
 # Funcion encargada de buscar el nombre mediante una búsqueda binaria
 def buscarNombre():
-    objetivo = input("Introduzca el nombre de la obra que desea buscar: ")
+    objetivo = input("\nIntroduzca el nombre de la obra que desea buscar: ")
 
     __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
     p = Path(__file__).with_name('nombreIndice.txt')
@@ -157,7 +159,7 @@ def regIndexes(name, cota, indice):
     with p.open('a') as k:
         k.write(name + '/' + str(indice) + '\n')
         k.close()
-    organizarName()
+    organizarNombre()
 
     __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
     p = Path(__file__).with_name('cotaIndice.txt')
@@ -178,7 +180,7 @@ def organizarCota():
     f.close()
 
 # Funcion reorganizar archivo nombreIndice
-def organizarName():
+def organizarNombre():
     __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
     p = Path(__file__).with_name('nombreIndice.txt')
     with p.open('r+') as f:
@@ -225,8 +227,9 @@ def validacion_nombre():
             lista_nombres.append(lineas[0])
 
         if nombre in lista_nombres:
-            print(f"Ya existe una obra guardada con el nombre '{nombre}'. Intente nuevamente.\n")
-            nuevaPintura()   
+            print(f"Ya existe una obra guardada con el nombre '{nombre}'.")
+            input("Presione enter para volver al menú principal...\n")
+            menu()   
         else:
             return nombre
     else:
@@ -250,8 +253,9 @@ def validacion_cota():
             lineas = linea.strip().split('/')
             lista_cotas.append(lineas[0])
         if cota in lista_cotas:
-            print(f"Ya existe una obra guardada con la cota '{cota}'. Intente nuevamente.\n")
-            nuevaPintura()
+            print(f"Ya existe una obra guardada con la cota '{cota}'.")
+            input("Presione enter para volver al menú principal...\n")
+            menu()
         else:  
             return cota
     else:
@@ -303,22 +307,21 @@ def nuevaPintura():
         else:
             print(
             "\nValor ingresado fuera de rango. Solo puede ingresar '1' o '2'")  
-        
     regIndexes(nombre, cota, indexDB())
     regPintura(cota, nombre, precio, ano, status)
-    input("La pintura ha sido agregada exitosamente.\nPresione enter para volver al menu...")
+    input("\nLa pintura ha sido agregada exitosamente.\nPresione enter para volver al menú...\n")
     menu()
 
 # Funcion encargada de compactar la base de datos  
 def eliminar():
-    selector = input("Seleccione como hacer su búsqueda:\n1. Buscar pintura por cota.\n2. Buscar pintura por nombre.\n>>>> ")
+    selector = input("\nSeleccione como hacer su búsqueda:\n1. Buscar pintura por cota\n2. Buscar pintura por nombre\n>>>> ")
     if selector == '1':
        index = buscarCota()
     elif selector == '2':
        index = buscarNombre()
     if index == '-1':
         print("No se ha encontrado la cota o nombre buscado.")
-        input("Presione enter para volver al menú principal... ")
+        input("Presione enter para volver al menú principal...\n")
         menu()
     else:
         index = int(index.replace('\n', ""))
@@ -331,7 +334,7 @@ def eliminar():
         aux = x[0]
         if aux[0:2] == "##":
             print("La pintura seleccionada ya estaba marcada para como eliminada.")
-            input("Presione enter para volver al menú principal... ")
+            input("Presione enter para volver al menú principal...\n")
             menu()  
         x[0] = '##' + x[0]
         cadena = ""
@@ -350,20 +353,20 @@ def eliminar():
                 f.write(elemento)
             f.close()
         print("La pintura fue marcada como eliminada exitosamente. Recuerde compactar la base de datos para confirmar su eliminación.")
-        input("Presione enter para volver al menú principal... ")
+        input("Presione enter para volver al menú principal...\n")
         menu()   
 
 # Funcion encargada de compactar la base de datos  
 def compactar():
     while True:
-        opcion = input("Esta seguro que quiere proceder con la compactación de la base de datos (S/N):\n>>>> ")
+        opcion = input("\nEsta seguro que quiere proceder con la compactación de la base de datos (S/N):\n>>>> ")
         if opcion == 'S' or opcion == 'N':
             break      
         else:
             print("Ingreso inválido, intente nuevamente.")
     if opcion == 'N':  
         print("La compactación ha sido cancelada con éxito.")
-        input("Presione enter para volver al menú principal... ")
+        input("Presione enter para volver al menú principal...\n")
         menu()
     
     __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
@@ -385,10 +388,18 @@ def compactar():
     compactarCotaIndice(compactacion)
     compactarNombreIndice(compactacion)
     compactarBaseDeDatos(compactacion)
+    organizarCotaIndices()
+    organizarNombreIndices()
 
-    print("La compactación ha sido realizada con éxito.")
-    input("Presione enter para volver al menú principal... ")
+    print("\nLa compactación ha sido realizada con éxito.")
+    input("Presione enter para volver al menú principal...\n")
     menu()
+
+def organizarCotaIndices():
+    return
+
+def organizarNombreIndices():
+    return
 
 # Funcion encargada de eliminar las pinturas indicadas en el archivos "cotaIndice.txt"      
 def compactarCotaIndice(compactacion):
@@ -462,5 +473,7 @@ def menu():
         input("Ha introducido un valor errado, por favor vuelva a intentarlo.\nPresione enter para reiniciar el programa...")
         menu()
 
+organizarNombre()
+organizarCota()
 # Funcion inicial del programa
 menu()
