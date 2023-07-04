@@ -390,16 +390,46 @@ def compactar():
     compactarBaseDeDatos(compactacion)
     organizarCotaIndices()
     organizarNombreIndices()
-
     print("\nLa compactación ha sido realizada con éxito.")
     input("Presione enter para volver al menú principal...\n")
     menu()
 
+# Funcion encargada de volver a escribir los indices correspondientes de cada obra en el archivo cotaIndice" despues de una compactacion
 def organizarCotaIndices():
-    return
+    __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    p = Path(__file__).with_name('db.txt')
+    with open(p, 'r') as f:
+        info = f.readlines()
+        f.close()
+    cadena = ""
+    for i, elemento in enumerate(info):
+        elemento = elemento[:8]
+        cadena = cadena + elemento + '/' + str(i) + '\n'
+    __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    p = Path(__file__).with_name('cotaIndice.txt')
+    with open(p, 'w') as f:  
+        f.writelines(cadena)
+        f.close()
+    organizarCota()
 
+# Funcion encargada de volver a escribir los indices correspondientes de cada obra en el archivo "nombreIndice" despues de una compactacion     
 def organizarNombreIndices():
-    return
+    __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    p = Path(__file__).with_name('db.txt')
+    with open(p, 'r') as f:
+        info = f.readlines()
+        f.close()
+    cadena = ""
+    for i, elemento in enumerate(info):
+        elemento = elemento.split('/')
+        elemento = elemento[1]
+        cadena = cadena + elemento + '/' + str(i) + '\n'
+    __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    p = Path(__file__).with_name('nombreIndice.txt')
+    with open(p, 'w') as f:  
+        f.writelines(cadena)
+        f.close()
+    organizarNombre()
 
 # Funcion encargada de eliminar las pinturas indicadas en el archivos "cotaIndice.txt"      
 def compactarCotaIndice(compactacion):
@@ -470,8 +500,9 @@ def menu():
     elif selector == '8':
         exit()             
     else:
-        input("Ha introducido un valor errado, por favor vuelva a intentarlo.\nPresione enter para reiniciar el programa...")
+        input("\nHa introducido un valor errado, por favor vuelva a intentarlo.\nPresione enter para reiniciar el programa...\n")
         menu()
 
+organizarNombreIndices()
 # Funcion inicial del programa
 menu()
