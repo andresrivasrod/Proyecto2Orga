@@ -297,7 +297,7 @@ def nuevaPintura():
     ano = str(validacion_ano())
     while True:
         selectStatus = input(
-            "\nSeleccione el estado de la obra:\n1. EN EXHIBICIÓN.\n2. EN MANTENIMIENTO.\n>>>> ")
+            "\nSeleccione el estado de la obra:\n1. EN EXHIBICIÓN\n2. EN MANTENIMIENTO\n>>>> ")
         if selectStatus == '1':
             status = 'EN EXHIBICION'
             break
