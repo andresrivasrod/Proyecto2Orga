@@ -396,7 +396,7 @@ def quitarEliminar():
             for elemento in g:
                 f.write(elemento)
             f.close()
-        print("\nLa pintura fue marcada como eliminada exitosamente. Recuerde compactar la base de datos para confirmar su eliminación.")
+        print("\nLa pintura fue desmarcada como eliminada exitosamente.")
         input("Presione enter para volver al menú principal...\n")
         menu()   
 
