@@ -153,14 +153,13 @@ def buscarNombre():
         return str(-1)        
 
 # Funcion de registrar en archivo nombreIndice y cotaIndice
-def regIndexes(name, cota, indice):
+def regIndices(name, cota, indice):
     __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
     p = Path(__file__).with_name('nombreIndice.txt')
     with p.open('a') as k:
         k.write(name + '/' + str(indice) + '\n')
         k.close()
     organizarNombre()
-
     __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
     p = Path(__file__).with_name('cotaIndice.txt')
     with p.open('a') as k:
@@ -202,11 +201,11 @@ def indexDB():
     return str(y)
 
 # Funcion que almacena los datos de la pintura en la base de datos
-def regPintura(cota, nombre, precio, ano, status):
+def regPintura(cota, nombre, precio, ano, estatus):
     __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
     p = Path(__file__).with_name('db.txt')
     with p.open('a') as f:
-        f.write(cota + '/' + nombre + '/' + precio + '/' + ano + '/' + status + '\n')
+        f.write(cota + '/' + nombre + '/' + precio + '/' + ano + '/' + estatus + '\n')
         f.close()    
     
 # Funcion de validacion de nombre
@@ -227,7 +226,7 @@ def validacion_nombre():
             lista_nombres.append(lineas[0])
 
         if nombre in lista_nombres:
-            print(f"Ya existe una obra guardada con el nombre '{nombre}'.")
+            print(f"\nYa existe una obra guardada con el nombre '{nombre}'.")
             input("Presione enter para volver al menú principal...\n")
             menu()   
         else:
@@ -253,7 +252,7 @@ def validacion_cota():
             lineas = linea.strip().split('/')
             lista_cotas.append(lineas[0])
         if cota in lista_cotas:
-            print(f"Ya existe una obra guardada con la cota '{cota}'.")
+            print(f"\nYa existe una obra guardada con la cota '{cota}'.")
             input("Presione enter para volver al menú principal...\n")
             menu()
         else:  
@@ -296,19 +295,20 @@ def nuevaPintura():
     precio = str(validacion_precio())
     ano = str(validacion_ano())
     while True:
-        selectStatus = input(
+        selectEstatus = input(
             "\nSeleccione el estado de la obra:\n1. EN EXHIBICIÓN\n2. EN MANTENIMIENTO\n>>>> ")
-        if selectStatus == '1':
-            status = 'EN EXHIBICION'
+        if selectEstatus == '1':
+            estatus = 'EN EXHIBICION'
             break
-        elif selectStatus == '2':
-            status = 'EN MANTENIMIENTO'
+        elif selectEstatus == '2':
+            estatus = 'EN MANTENIMIENTO'
             break
         else:
             print(
             "\nValor ingresado fuera de rango. Solo puede ingresar '1' o '2'")  
-    regIndexes(nombre, cota, indexDB())
-    regPintura(cota, nombre, precio, ano, status)
+    regIndices(nombre, cota, indexDB())
+    regPintura(cota, nombre, precio, ano, estatus) 
+    print('\n\tCota: ' + cota + '\n\tNombre: ' + nombre + '\n\tPrecio: $' + precio + '\n\tAño: ' + ano + '\n\tEstatus: ' + estatus)
     input("\nLa pintura ha sido agregada exitosamente.\nPresione enter para volver al menú...\n")
     menu()
 
